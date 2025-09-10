@@ -13,9 +13,14 @@ resource "aws_iam_role" "this" {
  # role       = aws_iam_role.this.name
  # policy_arn = each.value
 #}
-resource "aws_iam_role_policy_attachment" "this" {
-  count      = length(var.managed_policy_arns)
-  role       = aws_iam_role.this.name
-  policy_arn = var.managed_policy_arns[count.index]
-}
+#resource "aws_iam_role_policy_attachment" "this" {
+#  count      = length(var.managed_policy_arns)
+#  role       = aws_iam_role.this.name
+#  policy_arn = var.managed_policy_arns[count.index]
+#}
 
+resource "aws_iam_role_policy_attachment" "this" {
+  for_each   = { for idx, arn in var.managed_policy_arns : idx => arn }
+  role       = aws_iam_role.this.name
+  policy_arn = each.value
+}
