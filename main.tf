@@ -8,8 +8,14 @@ resource "aws_iam_role" "this" {
 }
 
 # Attach AWS managed policies (optional)
+#resource "aws_iam_role_policy_attachment" "this" {
+ # for_each   = toset(var.managed_policy_arns)
+ # role       = aws_iam_role.this.name
+ # policy_arn = each.value
+#}
 resource "aws_iam_role_policy_attachment" "this" {
-  for_each   = toset(var.managed_policy_arns)
+  count      = length(var.managed_policy_arns)
   role       = aws_iam_role.this.name
-  policy_arn = each.value
+  policy_arn = var.managed_policy_arns[count.index]
 }
+
