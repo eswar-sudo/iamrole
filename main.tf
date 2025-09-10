@@ -2,7 +2,7 @@ provider "aws" {
   region = "us-east-2"
 }
 
-resource "aws_iam_role" "example_role" {
+resource "aws_iam_role" "this" {
   name = var.name
   assume_role_policy = jsonencode(var.assume_role_policy)
 }
